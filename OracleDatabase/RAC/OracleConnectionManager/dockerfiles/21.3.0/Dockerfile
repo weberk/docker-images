@@ -8,8 +8,8 @@
 # 
 # REQUIRED FILES TO BUILD THIS IMAGE
 # ----------------------------------
-# (1) LINUX.X64_193000_client.zip 
-#     Oracle Database 19c Client (19.3) for Linux x86-64
+# (1) LINUX.X64_213000_client.zip 
+#     Oracle Database 21c Client (21.3) for Linux x86-64
 #     Download Oracle Connection Manager as part of the Oracle Database Client
 #     from https://www.oracle.com/technetwork/database/enterprise-edition/downloads/oracle18c-linux-180000-5022980.html 
 #
@@ -17,7 +17,7 @@
 # -----------------------
 # Put all downloaded files in the same directory as this Dockerfile
 # Run: 
-#      $ docker build -t oracle/cman:19.3.0 . 
+#      $ docker build -t oracle/cman:21.3.0 . 
 #
 # Pull base image
 # ---------------
@@ -35,9 +35,9 @@ ENV SETUP_LINUX_FILE="setupLinuxEnv.sh" \
 # Grid Env variables
     INVENTORY=/u01/app/oraInventory \
     DB_BASE=/u01/app/oracle \
-    DB_HOME=/u01/app/oracle/product/19.3.0/client_1 \
-    INSTALL_FILE_1="LINUX.X64_193000_client.zip" \
-    DB_INSTALL_RSP="client19c_install.rsp" \
+    DB_HOME=/u01/app/oracle/product/21.3.0/client_1 \
+    INSTALL_FILE_1="LINUX.X64_213000_client.zip" \
+    DB_INSTALL_RSP="client21c_install.rsp" \
     DB_SETUP_FILE="setupDB.sh" \
     RUN_FILE="runOracle.sh" \
     CONFIG_CMAN_FILE="configCMAN.sh" \
@@ -65,15 +65,15 @@ RUN chmod 755 $INSTALL_DIR/install/*.sh && \
     $INSTALL_DIR/install/$CHECK_SPACE_FILE && \
     $INSTALL_DIR/install/$SETUP_LINUX_FILE && \
     $INSTALL_DIR/install/$DB_SETUP_FILE  && \
-    sed -e '/hard *memlock/s/^/#/g' -i /etc/security/limits.d/oracle-database-preinstall-19c.conf && \
+    sed -e '/hard *memlock/s/^/#/g' -i /etc/security/limits.d/oracle-database-preinstall-21c.conf && \
     su oracle -c "$INSTALL_DIR/install/$INSTALL_DB_BINARIES_FILE EE" && \
     $INVENTORY/orainstRoot.sh && \
     $DB_HOME/root.sh && \
     rm -rf $INSTALL_DIR/install && \
-    rm -f /etc/sysctl.d/99-oracle-database-preinstall-19c-sysctl.conf && \
+    rm -f /etc/sysctl.d/99-oracle-database-preinstall-21c-sysctl.conf && \
     rm -f /etc/sysctl.d/99-sysctl.conf && \ 
-    rm -f /etc/rc.d/init.d/oracle-database-preinstall-19c-firstboot && \
-    rm -f /etc/security/limits.d/oracle-database-preinstall-19c.conf && \
+    rm -f /etc/rc.d/init.d/oracle-database-preinstall-21c-firstboot && \
+    rm -f /etc/security/limits.d/oracle-database-preinstall-21c.conf && \
     rm -f $INSTALL_DIR/install/*  && \
     chown -R oracle:oinstall $SCRIPT_DIR && \
     chmod 755 $SCRIPT_DIR/*.sh && \

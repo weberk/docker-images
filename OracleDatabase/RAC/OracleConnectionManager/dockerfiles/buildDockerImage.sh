@@ -50,7 +50,7 @@ checksumPackages() {
 ##############
 
 # Parameters
-VERSION="12.2.0.1"
+VERSION="19.3.0"
 SKIPMD5=0
 DOCKEROPS=""
 
@@ -80,7 +80,7 @@ while getopts "hiv:o:" optname; do
 done
 
 # Oracle Connection Manager Image Name
-IMAGE_NAME="oracle/client-cman:$VERSION"
+IMAGE_NAME="phx.ocir.io/intsanjaysingh/db-operator/sharding:cman-$VERSION"
 
 # Go into version folder
 cd $VERSION
@@ -130,6 +130,8 @@ docker build --force-rm=true --no-cache=true $DOCKEROPS $PROXY_SETTINGS -t $IMAG
 }
 BUILD_END=$(date '+%s')
 BUILD_ELAPSED=`expr $BUILD_END - $BUILD_START`
+
+docker push $IMAGE_NAME
 
 echo ""
 

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: oracle-db-connection-manager-service-permanent-ip
+  namespace: default
+spec:
+  loadBalancerIP: 132.145.255.210
+  ports:
+    - port: 1521
+      targetPort: 1521
+      protocol: TCP
+  selector:
+    app: oracle-sharding-db-connection-manager
+  type: LoadBalancer
+

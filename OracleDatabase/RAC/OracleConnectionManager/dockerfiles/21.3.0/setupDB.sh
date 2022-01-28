@@ -26,8 +26,8 @@ echo "oracle       ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers
 chmod 440 /etc/sudoers
 
 echo "export ORACLE_HOME=$DB_HOME" >> /home/oracle/.bashrc
-echo "export JAVA_HOME=/u01/app/oracle/product/19.3.0/client_1/jdk" >> /home/oracle/.bashrc
-echo "export PATH=/u01/app/oracle/product/19.3.0/client_1/jdk/bin:$DB_PATH" >> /home/oracle/.bashrc
+echo "export JAVA_HOME=/u01/app/oracle/product/21.3.0/client_1/jdk" >> /home/oracle/.bashrc
+echo "export PATH=/u01/app/oracle/product/21.3.0/client_1/jdk/bin:$DB_PATH" >> /home/oracle/.bashrc
 echo "export LD_LIBRARY_PATH=$DB_LD_LIBRARY_PATH" >> /home/oracle/.bashrc
 echo "export SCRIPT_DIR=$SCRIPT_DIR" >> /home/oracle/.bashrc
 echo "export DB_HOME=$DB_HOME" >> /home/oracle/.bashrc
