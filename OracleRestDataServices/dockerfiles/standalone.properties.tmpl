@@ -1,4 +1,4 @@
-jetty.port=###PORT###
+#jetty.port=###PORT###
 standalone.access.log=/tmp/ords_log
 standalone.context.path=/###CONTEXT_ROOT###
 standalone.doc.root=###DOC_ROOT###
@@ -6,3 +6,13 @@ standalone.scheme.do.not.prompt=true
 standalone.static.context.path=/i
 standalone.static.do.not.prompt=true
 standalone.static.path=###APEXI###
+# Standalone HTTPS - Auto SSL
+standalone.mode=true
+standalone.use.https=true
+standalone.https.port=###PORT###
+jetty.secure.port=###PORT###
+standalone.ssl.cert=
+standalone.ssl.cert.key=
+standalone.ssl.host=###ORACLE_HOST###
+standalone.use.ssl.cert=false
+

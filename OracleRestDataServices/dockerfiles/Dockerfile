@@ -20,7 +20,7 @@
 #
 # Pull base image
 # ---------------
-FROM oracle/serverjre:8
+FROM container-registry.oracle.com/java/serverjre:8
 
 # Labels
 # ----------
@@ -55,7 +55,7 @@ RUN mkdir -p  $ORDS_HOME/doc_root && \
 # Finalize setup
 # -------------------
 USER oracle
-WORKDIR /home/oracle
+WORKDIR $ORDS_HOME
 
 VOLUME ["$ORDS_HOME/config/ords"]
 EXPOSE 8888

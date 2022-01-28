@@ -51,13 +51,14 @@ function setupOrds() {
   sed -i -e "s|###ORACLE_PWD###|$ORACLE_PWD|g" $ORDS_HOME/params/ords_params.properties
   
   # Replace standalone runtime variables (standalone.properties)
-  sed -i -e "s|###PORT###|8888|g" $ORDS_HOME/config/$CONTEXT_ROOT/standalone/standalone.properties
+#  sed -i -e "s|###PORT###|8888|g" $ORDS_HOME/config/$CONTEXT_ROOT/standalone/standalone.properties
   sed -i -e "s|###CONTEXT_ROOT###|$CONTEXT_ROOT|g" $ORDS_HOME/config/$CONTEXT_ROOT/standalone/standalone.properties
   sed -i -e "s|###DOC_ROOT###|$ORDS_HOME/doc_root|g" $ORDS_HOME/config/$CONTEXT_ROOT/standalone/standalone.properties
   sed -i -e "s|###APEXI###|$APEXI|g" $ORDS_HOME/config/$CONTEXT_ROOT/standalone/standalone.properties
+  sed -i -e "s|###ORACLE_HOST###|$ORACLE_HOST|g" $ORDS_HOME/config/$CONTEXT_ROOT/standalone/standalone.properties
    
-   # Start ODRDS setup
-   java -jar $ORDS_HOME/$CONTEXT_ROOT.war install simple
+  # Start ODRDS setup : will timeout after setup and this script will renter for standalone startup
+  java -jar $ORDS_HOME/$CONTEXT_ROOT.war install --parameterFile $ORDS_HOME/params/ords_params.properties --verbose --debug --silent --logDir /tmp simple
 }
 
 ############# MAIN ################
@@ -67,4 +68,20 @@ if [ ! -f $ORDS_HOME/config/$CONTEXT_ROOT/standalone/standalone.properties ]; th
    setupOrds;
 fi;
 
-java -jar $ORDS_HOME/$CONTEXT_ROOT.war standalone
+java -jar $ORDS_HOME/$CONTEXT_ROOT.war set-property db.serviceNameSuffix ""
+sed -i -e "s|###PORT###|8888|g" $ORDS_HOME/config/$CONTEXT_ROOT/standalone/standalone.properties
+
+echo db.cdb.adminUser=C##DBAPI_CDB_ADMIN as SYSDBA > cdbAdmin.properties
+echo db.cdb.adminUser.password=$ORDS_PWD  >> cdbAdmin.properties
+java -jar ords.war set-properties cdbAdmin.properties
+java -jar ords.war set-properties --conf apex_pu cdbAdmin.properties
+#rm cdbAdmin.properties
+
+echo db.adminUser=test_ords > pdbAdmin.properties
+echo db.adminUser.password=$ORDS_PWD >> pdbAdmin.properties
+java -jar ords.war set-properties --conf apex_pu pdbAdmin.properties
+#rm pdbAdmin.properties
+#java -jar ords.war user admin "SQL Administrator" "System Administrator" "SQL Administrator"
+echo "admin;{SSHA-512}/2K9TFGfB6Gsj3LkmLgllDFsuZljMRfTAmOaCwTOBXmiwinUn/I+NJYP57ptinqWXSEQnZDMarrSNGih5JAKOwu21Vy0DoeU;SQL Administrator,System Administrator,SQL Administrator" > $ORDS_HOME/config/$CONTEXT_ROOT/credentials
+java -jar $ORDS_HOME/$CONTEXT_ROOT.war standalone --verbose --debug
+#sleep 30000

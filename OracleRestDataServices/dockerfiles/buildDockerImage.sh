@@ -97,7 +97,7 @@ fi;
 
 
 # Oracle Database Image Name
-IMAGE_NAME="oracle/restdataservices:$VERSION"
+IMAGE_NAME="phx.ocir.io/intsanjaysingh/db-operator/sharding:restdataservices-$VERSION"
 
 if [ ! "$SKIPMD5" -eq 1 ]; then
   checksumPackages
@@ -147,7 +147,9 @@ docker build --force-rm=true --no-cache=true $DOCKEROPS $PROXY_SETTINGS \
 BUILD_END=$(date '+%s')
 BUILD_ELAPSED=$((BUILD_END - BUILD_START))
 
-echo ""
+echo "pushing image"
+docker push $IMAGE_NAME
+
 
 cat << EOF
   Oracle Rest Data Services version $VERSION is ready to be extended: 
